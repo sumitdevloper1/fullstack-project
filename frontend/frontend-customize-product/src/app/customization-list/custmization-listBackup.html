@@ -1,0 +1,152 @@
+<div class="container mt-5">
+  <!-- Header + Search + Actions -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-primary">🧩 Customizations List</h2>
+
+    <div class="d-flex gap-3 align-items-center flex-wrap">
+      <div class="input-group" style="width: 300px;">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search Unique Code..."
+          [(ngModel)]="searchTerm"
+        />
+        <span class="input-group-text bg-light border-start-0">
+          <i class="bi bi-search"></i>
+        </span>
+      </div>
+
+      <a routerLink="/standard-code" class="btn btn-success">
+        ➕ Create New Customization
+      </a>
+
+      <button class="btn btn-outline-primary" (click)="refreshList()">
+        🔄 Refresh
+      </button>
+
+      <button class="btn btn-success" (click)="exportToExcel()">
+        ⬇️ Export to Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="text-center text-primary mt-5">
+    <div class="spinner-border" role="status"></div>
+    <p class="mt-2">Loading customizations...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger text-center mt-3">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Table Display -->
+  <ng-container *ngIf="!isLoading">
+    <table
+      *ngIf="(displayCustomizations | filterCustomizations: searchTerm).length > 0"
+      class="table table-bordered table-striped rounded-4 shadow-sm align-middle"
+    >
+      <thead class="table-primary">
+        <tr>
+          <th>#</th>
+          <th>Unique Code</th>
+          <th>Standard Code ID</th>
+          <th>Standard Code</th>
+          <th>Printing (Mark)</th>
+          <th>Printing (Print)</th>
+          <th>Engraving</th>
+          <th>Accessories Added</th>
+          <th>Accessories Removed</th>
+          <th>Label Note</th>
+          <th>File</th>
+          <th>Capacity</th>
+          <th>Neck Size</th>
+          <th>Actions</th>
+        </tr>
+
+        <!-- 🔍 Column-wise search inputs -->
+        <tr>
+          <th></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.unique_code" /></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.standard_code_id" /></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.standard_code" /></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.mark" /></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.print" /></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.engraving" /></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.added" /></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.removed" /></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.note" /></th>
+          <th></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.capacity" /></th>
+          <th><input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="filters.neck" /></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+       <tr
+  *ngFor="
+    let item of displayCustomizations
+      | filterCustomizations: searchTerm
+      | filterByColumns: filters;
+    let i = index
+  "
+>
+          <td>{{ i + 1 }}</td>
+          <td><strong>{{ item.unique_code }}</strong></td>
+          <td>{{ item.standard_code_id }}</td>
+          <td>{{ item.standard_code?.code || '—' }}</td>
+          <td>{{ item.printing_color_mark_text }}</td>
+          <td>{{ item.printing_color_print_text }}</td>
+          <td>{{ item.engraving || '—' }}</td>
+          <td>{{ item.add_accessories_text }}</td>
+          <td>{{ item.remove_accessories_text }}</td>
+          <td>{{ item.specifications?.[0]?.note || '—' }}</td>
+          <td>
+            <div *ngIf="item.specifications?.[0]?.file">
+              <a
+                [href]="'http://127.0.0.1:8000/' + item.specifications[0].file"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-sm btn-outline-primary"
+              >
+                ⬇️ Download
+              </a>
+            </div>
+          </td>
+          <td>{{ item.specifications?.[0]?.capacity || '—' }}</td>
+          <td>{{ item.specifications?.[0]?.neck_size || '—' }}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-outline-danger"
+              (click)="deleteCustomization(item.id)"
+            >
+              🗑 Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- No Results -->
+    <div
+      *ngIf="
+        searchTerm &&
+        (displayCustomizations | filterCustomizations: searchTerm).length === 0
+      "
+      class="alert alert-warning text-center mt-4"
+    >
+      No customizations found matching
+      <strong>"{{ searchTerm }}"</strong>.
+    </div>
+
+    <div
+      *ngIf="!searchTerm && displayCustomizations.length === 0"
+      class="alert alert-info text-center mt-4"
+    >
+      No customizations saved yet!
+    </div>
+  </ng-container>
+</div>

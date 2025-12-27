@@ -1,0 +1,158 @@
+<div class="container-fluid">
+
+  <!-- HEADER -->
+  <div class="card shadow border-0 mb-4">
+    <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <h3 class="fw-bold text-primary m-0">📋 Customization List</h3>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn btn-outline-danger px-3 py-1"
+                [disabled]="selectedIds.size === 0"
+                (click)="deleteSelected()">
+          🗑 Delete Selected ({{ selectedIds.size }})
+        </button>
+
+        <button class="btn btn-outline-primary px-3 py-1" (click)="refreshList()">🔄 Refresh</button>
+        <button class="btn btn-outline-success px-3 py-1" (click)="exportToExcel()">⬇️ Export Excel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="isLoading" class="text-center my-3">
+    <div class="spinner-border text-primary"></div>
+    <p class="text-secondary mt-1" style="font-size:0.8rem;">Loading customizations...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div *ngIf="errorMessage" class="alert alert-danger text-center" style="font-size:0.8rem;">
+    {{ errorMessage }}
+  </div>
+
+  <!-- MAIN TABLE -->
+  <ng-container *ngIf="!isLoading">
+    <div class="card shadow border-0">
+      <div class="card-body p-0">
+
+        <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+          <table
+            *ngIf="(displayCustomizations | filterCustomizations : searchTerm).length > 0"
+            class="table table-hover table-bordered table-sm mb-0 align-middle"
+            style="font-size:0.7rem;"
+          >
+            <thead class="table-primary text-center sticky-top">
+
+              <!-- MAIN HEADER -->
+              <tr>
+                <th>
+                  <input type="checkbox"
+                         (change)="toggleSelectAll($event)"
+                         [checked]="isAllSelected()" />
+                </th>
+                <th>#</th>
+                <th>Unique Code</th>
+                <th>Created date</th>
+                <th>Standard Code ID</th>
+                <th>Standard Code</th>
+                <th>Mark</th>
+                <th>Print</th>
+                <th>Engraving</th>
+                <th>Added</th>
+                <th>Removed</th>
+                <th>Label Note</th>
+                <th>Capacity</th>
+                <th>Neck Size</th>
+                <th>Item</th>
+                <th>Description</th>
+                <th>Remarks</th>
+                <th>Vendor</th>
+                <th>Pack Size</th>
+                <th>MOQ</th>
+                <th>File</th>
+                <th>Actions</th>
+              </tr>
+
+              <!-- COLUMN FILTERS -->
+              <tr class="bg-light sticky-top" style="top: 45px;">
+                <th></th>
+                <th></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.unique_code" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.created_at" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.standard_code_id" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.standard_code" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.mark" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.print" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.engraving" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.added" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.removed" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.note" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.capacity" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.neck" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.item_name" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.item_description" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.remarks" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.vendor_name" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.pack_size" placeholder="🔍 Search"></th>
+                <th><input class="form-control form-control-sm" [(ngModel)]="filters.moq" placeholder="🔍 Search"></th>
+                <th></th>
+                <th>
+                  <button class="btn btn-outline-secondary btn-sm" (click)="clearFilters()">Clear</button>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let item of displayCustomizations
+                           | filterCustomizations: searchTerm
+                           | filterByColumns: filters; let i = index"
+                  class="text-center">
+
+                <td>
+                  <input type="checkbox"
+                         [checked]="selectedIds.has(item.id)"
+                         (change)="toggleSelection(item.id, $event)" />
+                </td>
+
+                <td>{{ i + 1 }}</td>
+                <td class="fw-bold text-primary">{{ item.unique_code }}</td>
+                <td>{{ item.created_at | date:'dd MMM yyyy' }}</td>
+                <td>{{ item.standard_code_id }}</td>
+                <td>{{ item.standard_code?.code || '—' }}</td>
+                <td>{{ item.printing_color_mark_text }}</td>
+                <td>{{ item.printing_color_print_text }}</td>
+                <td>{{ item.engraving || '—' }}</td>
+                <td>{{ item.add_accessories_text }}</td>
+                <td>{{ item.remove_accessories_text }}</td>
+                <td>{{ item.specifications?.[0]?.note || '—' }}</td>
+                <td>{{ item.specifications?.[0]?.capacity || '—' }}</td>
+                <td>{{ item.specifications?.[0]?.neck_size || '—' }}</td>
+                <td>{{ item.specifications?.[0]?.item_name || '—' }}</td>
+                <td>{{ item.specifications?.[0]?.item_description || '—' }}</td>
+                <td>{{ item.specifications?.[0]?.remarks || '—' }}</td>
+                <td>{{ item.specifications?.[0]?.vendor_name || '—' }}</td>
+                <td>{{ item.specifications?.[0]?.pack_size || '—' }}</td>
+                <td>{{ item.specifications?.[0]?.moq || '—' }}</td>
+
+                <td>
+                  <a *ngIf="item.specifications?.[0]?.file"
+                     class="btn btn-sm btn-outline-primary p-1"
+                     target="_blank"
+                     [href]="'http://127.0.0.1:8000/' + item.specifications[0].file">
+                    ⬇️ File
+                  </a>
+                </td>
+
+                <td>
+                  <button class="btn btn-sm btn-outline-danger p-1"
+                          (click)="deleteCustomization(item.id)">
+                    🗑
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,324 @@
+<div class="container-fluid  d-flex flex-column bg-light" style="min-height: calc(100vh - 70px);">
+  <div class="row flex-grow-1 align-items-center justify-content-center">
+    <div class="col-12 col-lg-10">
+      <div class="card shadow-lg border-0 rounded-4">
+
+        <!-- Header -->
+        <div class="card-header text-center bg-primary text-white py-4 rounded-top-4">
+          <h2 class="mb-0 fw-bold">⚙️ Product Customization</h2>
+        </div>
+
+        <!-- Selected Standard Code Alert -->
+        <div class="alert alert-info mb-0">
+          <strong>Selected Standard Code:</strong> {{ standardCode }}
+          <div class="float-end">
+            <!-- <a routerLink="/customization-list" class="btn btn-warning btn-sm"> 📋 View Saved Customizations</a> -->
+          </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-5">
+          <div class="row g-4 text-center">
+            <!-- Printing Customization Button -->
+            <div class="col-md-6 col-lg-3">
+              <button class="btn btn-info w-100 py-4 shadow-sm rounded-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#printingModal">
+                <i class="bi bi-printer me-2"></i> Printing Customization
+              </button>
+            </div>
+            <!-- Engrave on PP Cap Button -->
+            <div class="col-md-6 col-lg-3">
+              <button class="btn btn-secondary w-100 py-4 shadow-sm rounded-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#engraveModal">
+                <i class="bi bi-pencil-square me-2"></i> Engrave on PP Cap
+              </button>
+            </div>
+            <!-- Label Print & Specs Button -->
+            <div class="col-md-6 col-lg-3">
+              <button class="btn btn-success w-100 py-4 shadow-sm rounded-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#labelModal">
+                <i class="bi bi-tags me-2"></i> Label Print & Specs
+              </button>
+            </div>
+            <!-- Accessories Button -->
+            <div class="col-md-6 col-lg-3">
+              <button class="btn btn-warning w-100 py-4 shadow-sm rounded-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#accessoriesModal">
+                <i class="bi bi-box-seam me-2"></i> Accessories
+              </button>
+            </div>
+          </div>
+
+          <!-- Save Button -->
+          <div class="text-center mt-5">
+            <button class="btn btn-primary btn-lg px-5 py-3 shadow fw-bold rounded-pill" (click)="saveAllInfo()">
+              <i class="bi bi-save me-2"></i> Save All Information
+            </button>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-center text-muted py-3 small">
+          © Supertek glassware • Product Customization Module
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Printing Modal -->
+<div class="modal fade" id="printingModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 700px; width: 100%;">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title"><i class="bi bi-printer-fill me-2"></i> Printing Customization</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <h6 class="fw-bold mb-3">Color Mark</h6>
+        <div class="row g-3 mb-4">
+          <div class="col-md-4">
+            <label class="form-label fw-semibold"> Shape</label>
+            <select class="form-select" [(ngModel)]="printing.shape">
+              <option>Round</option>
+              <option>Rectangular</option>
+              <option>Square</option>
+              <option>Ring</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold"> Location</label>
+            <select class="form-select" [(ngModel)]="printing.location">
+              <!-- <option disabled selected>Select Location</option> -->
+              <option>At Neck</option>
+              <option>Bulb</option>
+              <option>Above Logo</option>
+              <option>Before Logo</option>
+              <option>On Stopper</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold"> Color</label>
+            <select class="form-select" [(ngModel)]="printing.color">
+              <!-- <option disabled selected>Select Color</option> -->
+              <option>White</option>
+              <option>Black</option>
+              <option>Yellow</option>
+              <option>Green</option>
+              <option>Red</option>
+              <option>Blue</option>
+              <option>Orange</option>
+            </select>
+          </div>
+        </div>
+
+        <h6 class="fw-bold mb-3">Color Print</h6>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Customization Text</label>
+            <input type="text" class="form-control" placeholder="Customize Word" [(ngModel)]="printing.customText" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Printing Location</label>
+            <select class="form-select" [(ngModel)]="printing.printLocation">
+              <!-- <option disabled selected>Select Location</option> -->
+              <option>At Neck</option>
+              <option>Bulb</option>
+              <option>Above Logo</option>
+              <option>Before Logo</option>
+              <option>On Stopper</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Print Color</label>
+            <select class="form-select" [(ngModel)]="printing.printColor">
+              <!-- <option disabled selected>Select Color</option> -->
+              <option>White</option>
+              <option>Black</option>
+              <option>Yellow</option>
+              <option>Green</option>
+              <option>Red</option>
+              <option>Blue</option>
+              <option>Orange</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button class="btn btn-outline-danger" data-bs-dismiss="modal" (click)="resetPrinting()">Reset</button>
+        <button class="btn btn-info text-white" data-bs-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Engrave Modal -->
+<div class="modal fade" id="engraveModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header bg-secondary text-white">
+        <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i> Engrave on PP Cap</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-check mb-2">
+          <input type="radio" class="form-check-input" [(ngModel)]="engraving.enable" [value]="true" />
+          <label class="form-check-label">Yes</label>
+        </div>
+        <div class="form-check mb-3">
+          <input type="radio" class="form-check-input" [(ngModel)]="engraving.enable" [value]="false" />
+          <label class="form-check-label">No</label>
+        </div>
+        <div *ngIf="engraving.enable">
+          <input type="text" class="form-control" placeholder="Enter Engraving Text" [(ngModel)]="engraving.text" />
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-secondary text-white" data-bs-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Label Spec Modal -->
+<div class="modal fade" id="labelModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title"><i class="bi bi-tags-fill me-2"></i> Label Print & Specifications</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+     <div class="modal-body">
+  <div class="row g-3">
+    <!-- File Upload -->
+    <div class="col-12">
+      <input type="file" class="form-control mb-3" (change)="onFileChange($event)" />
+    </div>
+
+    <!-- Note -->
+    <div class="col-12">
+      <textarea class="form-control mb-3" rows="3" placeholder="Enter Note" [(ngModel)]="labelSpec.note"></textarea>
+    </div>
+
+    <!-- Neck Size -->
+    <div class="col-md-6">
+      <label class="form-label fw-semibold">Neck Size</label>
+      <input type="text" class="form-control" [(ngModel)]="labelSpec.neckSize" placeholder="Enter Neck Size" />
+    </div>
+
+    <!-- Capacity -->
+    <div class="col-md-6">
+      <label class="form-label fw-semibold">Capacity</label>
+      <input type="text" class="form-control" [(ngModel)]="labelSpec.capacity" placeholder="Enter Capacity" />
+    </div>
+
+    <!-- Item Name -->
+    <div class="col-md-6">
+      <label class="form-label fw-semibold">Item Name</label>
+      <input type="text" class="form-control" [(ngModel)]="labelSpec.item_name" placeholder="Enter Item Name" />
+    </div>
+
+    <!-- Item Description -->
+    <div class="col-md-6">
+      <label class="form-label fw-semibold">Item Description</label>
+      <textarea class="form-control" rows="2" [(ngModel)]="labelSpec.item_description" placeholder="Enter Item Description"></textarea>
+    </div>
+
+    <!-- Remarks -->
+    <div class="col-md-6">
+      <label class="form-label fw-semibold">Remarks</label>
+      <input type="text" class="form-control" [(ngModel)]="labelSpec.remarks" placeholder="Enter Remarks" />
+    </div>
+
+    <!-- Vendor Name -->
+    <div class="col-md-6">
+      <label class="form-label fw-semibold">Vendor Name</label>
+      <input type="text" class="form-control" [(ngModel)]="labelSpec.vendor_name" placeholder="Enter Vendor Name" />
+    </div>
+
+    <!-- Pack Size -->
+    <div class="col-md-6">
+      <label class="form-label fw-semibold">Pack Size</label>
+      <input type="text" class="form-control" [(ngModel)]="labelSpec.pack_size" placeholder="Enter Pack Size" />
+    </div>
+
+    <!-- MOQ -->
+    <div class="col-md-6">
+      <label class="form-label fw-semibold">MOQ</label>
+      <input type="text" class="form-control" [(ngModel)]="labelSpec.moq" placeholder="Enter MOQ" />
+    </div>
+  </div>
+</div>
+
+      <div class="modal-footer bg-light">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-success text-white" data-bs-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Accessories Modal -->
+<div class="modal fade" id="accessoriesModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-4" style="max-width: 700px; width: 100%;">
+      <div class="modal-header bg-success text-white rounded-top-4">
+        <h5 class="modal-title fw-semibold">Manage Accessories</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body bg-light">
+        <!-- Add Accessories -->
+        <div class="mb-4">
+          <label class="fw-bold text-success mb-2">Add Accessories</label>
+          <input type="text" class="form-control form-control-sm mb-3" placeholder="🔍 Search accessories..." [(ngModel)]="searchAdd" />
+
+          <!-- List of Add Accessories -->
+          <div class="list-group mb-3" style="max-height: 120px; overflow-y: auto;">
+            <div class="list-group-item list-group-item-action d-flex align-items-center" *ngFor="let item of accessoriesList | filter:searchAdd:'name'">
+              <input type="checkbox" class="form-check-input me-2" [checked]="isAccessorySelected(accessories.add, item.id)" (change)="toggleAccessory(item, 'add', $event)" id="add-{{ item.id }}" />
+              <label class="mb-0 flex-grow-1" for="add-{{ item.id }}">{{ item.name }}</label>
+            </div>
+          </div>
+
+          <!-- Add Custom Accessories -->
+          <div class="input-group mb-2">
+            <input type="text" class="form-control form-control-sm" placeholder="✏️ Type new accessory to add..." [(ngModel)]="newAddAccessory" (keyup.enter)="addCustomAccessory('add')" />
+            <button class="btn btn-success btn-sm" (click)="addCustomAccessory('add')">➕ Add</button>
+          </div>
+
+          <div class="small text-muted"><strong>Selected Add:</strong> {{ accessories.add | json }}</div>
+        </div>
+
+        <!-- Remove Accessories -->
+        <div class="mb-4">
+          <label class="fw-bold text-danger mb-2">Remove Accessories</label>
+          <input type="text" class="form-control form-control-sm mb-3" placeholder="🔍 Search accessories..." [(ngModel)]="searchRemove" />
+
+          <!-- List of Remove Accessories -->
+          <div class="list-group mb-3" style="max-height: 120px; overflow-y: auto;">
+            <div class="list-group-item list-group-item-action d-flex align-items-center" *ngFor="let item of accessoriesList | filter:searchRemove:'name'">
+              <input type="checkbox" class="form-check-input me-2" [checked]="isAccessorySelected(accessories.remove, item.id)" (change)="toggleAccessory(item, 'remove', $event)" id="remove-{{ item.id }}" />
+              <label class="mb-0 flex-grow-1" for="remove-{{ item.id }}">{{ item.name }}</label>
+            </div>
+          </div>
+
+          <!-- Remove Custom Accessories -->
+          <div class="input-group mb-2">
+            <input type="text" class="form-control form-control-sm" placeholder="✏️ Type new accessory to remove..." [(ngModel)]="newRemoveAccessory" (keyup.enter)="addCustomAccessory('remove')" />
+            <button class="btn btn-danger btn-sm" (click)="addCustomAccessory('remove')">➖ Remove</button>
+          </div>
+
+          <div class="small text-muted"><strong>Selected Remove:</strong> {{ accessories.remove | json }}</div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer bg-white rounded-bottom-4">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-outline-danger" type="button" (click)="resetAccessories()">Reset</button>
+        <button class="btn btn-success text-white" data-bs-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+

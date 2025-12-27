@@ -1,0 +1,102 @@
+<div class="container-fluid p-0" 
+     style="background-image: url('/assets/standard-img.jpg'); background-size: cover; background-position: center; min-height: 89vh; display: flex; justify-content: center; align-items: center; flex-direction: column; box-sizing: border-box;">
+
+  <!-- Top Buttons outside the card -->
+  <!-- <div class="d-flex justify-content-center gap-2 mb-4">
+    <button class="btn btn-warning" routerLink="/customization-list">
+      📋 View Saved Customizations
+    </button>
+
+    <label class="btn btn-success mb-0">
+      📂 Import Excel
+      <input type="file" #excelInput accept=".xlsx, .xls" hidden (change)="onFileChange($event)" />
+    </label>
+  </div> -->
+
+  <!-- Card -->
+  <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 450px; width: 100%; min-height: 400px;">
+
+ 
+<div class="d-flex justify-content-between gap-2 mb-4">
+    <!-- <button class="btn btn-warning" routerLink="/customization-list">
+      📋 View Saved Customizations
+    </button> -->
+ <h4 class="fw-bold  mb-4 text-secondary">
+    Select Standard Code
+  </h4>
+    <label class="btn btn-success mb-4">
+      ➕ Excel
+      <input type="file" #excelInput accept=".xlsx, .xls" hidden (change)="onFileChange($event)" />
+    </label>
+  </div>
+  <!-- Search + Add New button -->
+  <div class="input-group mb-3">
+    <input type="text" 
+           class="form-control" 
+           placeholder="Type to search..."
+           [(ngModel)]="searchText"
+           (input)="onSearchChange()" 
+           (blur)="hideSuggestions()">
+
+    <button class="btn btn-success" (click)="openModal()">
+      <i class="bi bi-plus-lg"></i>
+    </button>
+  </div>
+
+  <!-- Suggestions dropdown -->
+  <ul class="list-group shadow position-relative" 
+      *ngIf="showSuggestions" 
+      style="max-height: 150px; overflow-y: auto;">
+
+    <li class="list-group-item list-group-item-action"
+        *ngFor="let code of filteredStandardCodes"
+        (click)="selectSuggestion(code)">
+      {{ code.code }}
+    </li>
+  </ul>
+
+  <div class="mt-auto pt-3">
+    <button class="btn btn-primary w-100 fw-semibold" (click)="onSubmit($event)">
+      Continue →
+    </button>
+  </div>
+
+</div>
+
+
+  <!-- Modal -->
+  <div #createModal class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content rounded-4">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fw-semibold">Add New Code</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="form-control" placeholder="Enter new code" [(ngModel)]="newCode">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" (click)="saveNewCode()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div *ngFor="let toast of toasts"
+         class="toast show align-items-center text-bg-{{ toast.type }} border-0 mb-2"
+         role="alert"
+         aria-live="assertive"
+         aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          {{ toast.message }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                (click)="removeToast(toast)"></button>
+      </div>
+    </div>
+  </div>
+</div>

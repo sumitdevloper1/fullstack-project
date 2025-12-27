@@ -1,0 +1,54 @@
+/* Custom navbar styles */
+.custom-navbar {
+  background-color: #ffffff;
+  padding: 0.5rem 1rem;
+  z-index: 1030;
+}
+
+/* Brand text next to logo */
+.brand-text {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #0082c8;
+}
+
+/* Center nav links styling */
+.menu-link {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #666 !important;
+  padding: 8px 0;
+  transition: color 0.3s;
+}
+
+.menu-link:hover,
+.menu-link:focus {
+  color: #000 !important;
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: #0082c8;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #006ca5;
+}
+
+/* Add some padding to body so fixed navbar doesn’t cover content */
+body {
+  padding-top: 70px; /* adjust according to navbar height */
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .menu-link {
+    font-size: 0.9rem;
+  }
+  .brand-text {
+    font-size: 1rem;
+  }
+}
